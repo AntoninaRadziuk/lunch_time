@@ -25,7 +25,7 @@ CREATE TABLE Clients (
 );
 
 CREATE TABLE Restaurants (
-    Restaurant_Id INT NOT NULL,
+    Restaurant_Id INT NOT NULL AUTO_INCREMENT,
     Email VARCHAR(20) NOT NULL,
     Name VARCHAR(30) NOT NULL,
     Address VARCHAR(100) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE Kitchen_types (
 );
 
 CREATE TABLE Lunch_offerts (
-    Lunch_id INT NOT NULL,
+    Lunch_id INT NOT NULL AUTO_INCREMENT,
     Restaurant_Id INT NOT NULL,
     Date DATE NOT NULL,
     Soup_price DECIMAL,
@@ -63,7 +63,7 @@ CREATE TABLE Lunch_offerts (
 );
 
 CREATE TABLE Lunch_components (
-    Lunch_component_id INT NOT NULL,
+    Lunch_component_id INT NOT NULL AUTO_INCREMENT,
     Lunch_id INT NOT NULL,
     Component_type ENUM('Soup', 'Dish', 'Drink') NOT NULL,
     Component_name VARCHAR(20),

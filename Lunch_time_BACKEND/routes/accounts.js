@@ -40,13 +40,38 @@ router.post("/register/user", function (req, res, next) {
   });
 });
 
-router.post("/register/restaurant", function (req, res, next) {
-  const { email, password } = req.body;
-  let sql = ` INSERT INTO Accounts (email, password, accounttype) VALUES ('${email}', '${password}', 'Restaurant');`;
+// router.post("/register/restaurant", function (req, res, next) {
+//   const { email, password } = req.body;
+//   let sql = ` INSERT INTO Accounts (email, password, accounttype) VALUES ('${email}', '${password}', 'Restaurant');`;
 
-  req.app.database.query(sql, function (err, result) {
+//   req.app.database.query(sql, function (err, result) {
+//     if (err) throw err;
+//     console.log("1 record inserted into Accounts", result.insertId);
+//     res.status(201).send({ email: email });
+//   });
+// });
+
+router.post("/register/restaurant", function (req, res, next) {
+  const {
+    email,
+    password,
+    restaurantName,
+    restaurantAddress,
+    lunchTimeStart,
+    lunchTimeEnd,
+    websiteAddress,
+  } = req.body;
+  let sql1 = ` INSERT INTO Accounts (email, password, accounttype) VALUES ('${email}', '${password}', 'Restaurant');`;
+  let sql2 = ` INSERT INTO Restaurants (email, name, address, lunch_start_time, lunch_end_time, website_address) VALUES ('${email}', '${restaurantName}', '${restaurantAddress}', '${lunchTimeStart}', '${lunchTimeEnd}', '${websiteAddress}');`;
+
+  req.app.database.query(sql1, function (err, result) {
     if (err) throw err;
     console.log("1 record inserted into Accounts", result.insertId);
+  });
+
+  req.app.database.query(sql2, function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted into Restaurants", result.insertId);
     res.status(201).send({ email: email });
   });
 });
