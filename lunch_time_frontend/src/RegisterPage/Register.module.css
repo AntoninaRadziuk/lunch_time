@@ -1,0 +1,19 @@
+/* @media all and (min-width: 480px) { */
+    .Register {
+        /* padding: 60px 100px; */
+        display: flex;
+        justify-content: center;
+      }
+    
+      .Register form {
+        /* margin: 0 auto;
+        max-width: 320px; */
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+      }
+  
+      .CustomInput {
+        border: red;
+      }
+    /* } */
