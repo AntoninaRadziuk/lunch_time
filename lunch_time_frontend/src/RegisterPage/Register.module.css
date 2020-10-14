@@ -1,19 +1,35 @@
-/* @media all and (min-width: 480px) { */
-    .Register {
-        /* padding: 60px 100px; */
-        display: flex;
-        justify-content: center;
-      }
-    
-      .Register form {
-        /* margin: 0 auto;
-        max-width: 320px; */
-        display: flex;
-        flex-direction: column;
-        width: 300px;
-      }
-  
-      .CustomInput {
-        border: red;
-      }
-    /* } */
+.Register {
+  /* padding: 60px 100px; */
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.button {
+  margin: 10px 10px 0 !important;
+  max-width: 280px;
+}
+
+.Register img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.Register button {
+  padding: 10px;
+}
+
+.CustomInput {
+  border: red;
+}

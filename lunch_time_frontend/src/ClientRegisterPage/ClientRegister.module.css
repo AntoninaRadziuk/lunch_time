@@ -1,0 +1,51 @@
+.ClientRegister {
+    /* padding: 60px 100px; */
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .ClientRegister form {
+    /* margin: 0 auto;
+        max-width: 320px; */
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+  }
+
+  .ClientRegister img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .CustomInput {
+    /* border: red; */
+    margin: 5px 10px 0 !important;
+    max-width: 280px;
+    height: 50px;
+  }
+
+
+.button {
+    margin: 3px 10px 0 !important;
+    max-width: 280px;
+  }
+  
+  .errorContainer {
+    height: 25px !important;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }

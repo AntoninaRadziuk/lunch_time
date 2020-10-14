@@ -1,31 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./Login.module.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import { FormHelperText } from "@material-ui/core";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-// import { response } from "../../../Lunch_time_BACKEND/app";
-
-
+import Button from "@material-ui/core/Button";
+import logo from "../logo.png";
+import { useHistory } from "react-router-dom";
+import UserContext from '../userContext'
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  function validateForm() {
-    return email.length > 0 && password.length > 0;
-  }
+  const [errors, setErrors] = useState("");
+  const history = useHistory();
+  const userContext = useContext(UserContext)
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(email);
 
-    if (!validateForm()) {
-      setError("Wrong login or password");
-    }
-
-    fetch("http://localhost:4000/users/login", {
+    fetch("http://localhost:4000/accounts/login", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors",
       cache: "no-cache",
@@ -34,8 +27,29 @@ export default function Login() {
       },
       body: JSON.stringify({ email, password }), // body data type must match "Content-Type" header
     })
-      .then((response) => response.json())
-      .then((json) => console.log("json", json))
+      .then((response) => {
+        console.log(response.status);
+
+        return response.json();
+      })
+      .then((json) => {
+        setErrors(json);
+
+        console.log(json.account_type)
+
+        localStorage.setItem("token", json.token)
+        localStorage.setItem("email", email)
+        localStorage.setItem("account_type", json.account_type)
+        
+        userContext.setUser({ email, token: json.token, account_type: json.account_type })
+
+        if (!!json.token && json.account_type === 'Client') {
+          history.push('/home')
+        }
+        if (!!json.token && json.account_type === 'Restaurant') {
+          history.push('/homerestaurant')
+        }
+      })
       .catch((err) => console.log("err", err));
   }
 
@@ -46,25 +60,44 @@ export default function Login() {
 
   return (
     <div className={styles.Login}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          name="email"
-          label="Email"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          variant="outlined"
-          onChange={handleChange}
-          classes={{ root: styles.CustomInput }}
-        />
-        {!!error && <FormHelperText error>{error}</FormHelperText>}
-        <Button type="submit">Login</Button>
-        <Link to="/register">Register</Link>
-      </form>
+      <div className={styles.container}>
+        <img className="logo" src={logo} alt="Logo" />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            classes={{ root: styles.CustomInput }}
+            name="email"
+            label="Email"
+            variant="outlined"
+            onChange={handleChange}
+          />
+          <TextField
+            classes={{ root: styles.CustomInput }}
+            type="password"
+            name="password"
+            label="Password"
+            variant="outlined"
+            onChange={handleChange}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.email && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.email}
+              </FormHelperText>
+            )}
+          </div>
+          <Button
+            classes={{ root: styles.button }}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            Login
+          </Button>
+          <Link className={styles.link} to="/register">
+            Register
+          </Link>
+        </form>
+      </div>
     </div>
   );
 }

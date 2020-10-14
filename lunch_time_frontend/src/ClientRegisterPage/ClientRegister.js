@@ -3,52 +3,44 @@ import styles from "./ClientRegister.module.css";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import { FormHelperText } from "@material-ui/core";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Button from "@material-ui/core/Button";
+import logo from "../logo.png";
 
 export default function ClientRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
   const history = useHistory();
 
-  function validateForm() {
-    return (
-      email.length > 0 &&
-      password.length > 0 &&
-      passwordConfirm === passwordConfirm
-    );
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(event.target.name);
 
-    if (!validateForm()) {
-      setError("Wrong login or password");
-    } else {
-      console.log("OK rejestration!");
-    }
+    console.log(password, passwordConfirm)
 
-      console.log("CLIENT_BUTTON");
-      fetch("http://localhost:4000/accounts/register/user", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }), // body data type must match "Content-Type" header
+    fetch("http://localhost:4000/accounts/register/user", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password, passwordConfirm }), // body data type must match "Content-Type" header
+    })
+      .then((response) => {
+        console.log("response.status: ", response.status);
+        if (response.status === 201) {
+          history.push("/login");
+        }
+        return response.json();
       })
-        .then((response) => {
-          response.json()
-          console.log(response.status);
-          if (response.status === 201) {
-            history.push("/home");
-          }
-        })
-        .then((json) => console.log("json", json))
-        .catch((err) => console.log("err", err));
+      // .then((json) => console.log("json", json))
+      .then((json) => {
+        setErrors(json);
+        return console.log("json", json);
+      })
+      .catch((err) => console.log("err", err));
   }
 
   const handleChange = (event) => {
@@ -59,35 +51,66 @@ export default function ClientRegister() {
   };
 
   return (
-    <div className={styles.Register}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          name="email"
-          label="Email"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          variant="outlined"
-          onChange={handleChange}
-          classes={{ root: styles.CustomInput }}
-        />
-        <TextField
-          type="password"
-          name="password_confirm"
-          label="Confirm password"
-          variant="outlined"
-          onChange={handleChange}
-          classes={{ root: styles.CustomInput }}
-        />
-        {!!error && <FormHelperText error>{error}</FormHelperText>}
-        <Button type="submit">
-          Register
-        </Button>
-      </form>
+    <div className={styles.ClientRegister}>
+      <div className={styles.container}>
+        <img class="logo" src={logo} alt="Logo" />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            classes={{ root: styles.CustomInput }}
+            type="email"
+            name="email"
+            label="Email"
+            variant="outlined"
+            onChange={handleChange}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.email && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.email}
+              </FormHelperText>
+            )}
+          </div>
+          <TextField
+            type="password"
+            name="password"
+            label="Password"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {/* {!!errors && ( */}
+            <FormHelperText
+              classes={{ root: styles.error }}
+              error
+            ></FormHelperText>
+            {/* )} */}
+          </div>
+          <TextField
+            type="password"
+            name="password_confirm"
+            label="Confirm password"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.password && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.password}
+              </FormHelperText>
+            )}
+          </div>
+          <Button
+            classes={{ root: styles.button }}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            Register
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }

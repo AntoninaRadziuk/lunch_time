@@ -1,0 +1,10 @@
+.logo {
+  display: block;
+  margin-right: auto;
+  width: 100%;
+  max-width: 125px;
+}
+
+.buttonIn {
+    margin-left: 20px !important;
+}

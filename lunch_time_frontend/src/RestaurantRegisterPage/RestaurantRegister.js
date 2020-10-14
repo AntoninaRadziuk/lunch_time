@@ -3,33 +3,24 @@ import styles from "./RestaurantRegister.module.css";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import { FormHelperText } from "@material-ui/core";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Button from "@material-ui/core/Button";
+import logo from "../logo.png";
 
 export default function RestaurantRegister() {
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurantAddress, setRestaurantAddress] = useState("");
-  const [lunchTimeStart, setLunchTimeStart] = useState("1200");
-  const [lunchTimeEnd, setLunchTimeEnd] = useState("1600");
+  const [lunchTimeStart, setLunchTimeStart] = useState("");
+  const [lunchTimeEnd, setLunchTimeEnd] = useState("");
   const [websiteAddress, setWebsiteAddress] = useState("");
   const history = useHistory();
-
-  function validateForm() {
-    return restaurantName.length > 0;
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
     console.log(event.target.name);
-
-    if (!validateForm()) {
-      setError("Wrong login or password");
-    } else {
-      console.log("OK rejestration!");
-    }
 
     fetch("http://localhost:4000/accounts/register/restaurant", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -41,6 +32,7 @@ export default function RestaurantRegister() {
       body: JSON.stringify({
         email,
         password,
+        passwordConfirm,
         restaurantName,
         restaurantAddress,
         lunchTimeStart,
@@ -49,13 +41,16 @@ export default function RestaurantRegister() {
       }),
     })
       .then((response) => {
-        response.json();
         console.log(response.status);
         if (response.status === 201) {
-          history.push("/home");
+          history.push("/login");
         }
+        return response.json();
       })
-      .then((json) => console.log("json", json))
+      .then((json) => {
+        setErrors(json);
+        return console.log("json", json);
+      })
       .catch((err) => console.log("err", err));
   }
 
@@ -70,75 +65,146 @@ export default function RestaurantRegister() {
       setRestaurantAddress(event.target.value);
     if (event.target.name === "lunch_time_start")
       setLunchTimeStart(event.target.value);
-    if (event.target.name === "lunch_time_ene")
+    if (event.target.name === "lunch_time_end")
       setLunchTimeEnd(event.target.value);
     if (event.target.name === "website_address")
       setWebsiteAddress(event.target.value);
   };
 
   return (
-    <div className={styles.Register}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          name="email"
-          label="Email"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          variant="outlined"
-          onChange={handleChange}
-          classes={{ root: styles.CustomInput }}
-        />
-        <TextField
-          type="password"
-          name="password_confirm"
-          label="Confirm password"
-          variant="outlined"
-          onChange={handleChange}
-          classes={{ root: styles.CustomInput }}
-        />
-        <TextField
-          name="restaurant_name"
-          type="text"
-          label="Restaurant name"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          name="restaurant_address"
-          type="text"
-          label="Restaurant address"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          name="lunch_time_start"
-          type="text"
-          label="Lunch time start"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          name="lunch_time_end"
-          type="text"
-          label="Lunch time end"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        <TextField
-          name="website_address"
-          type="text"
-          label="Website address"
-          variant="outlined"
-          onChange={handleChange}
-        />
-        {/* {!!error && <FormHelperText error>{error}</FormHelperText>} */}
-        <Button type="submit">Create restaurant's account</Button>
-      </form>
+    <div className={styles.RestaurantRegister}>
+      <div className={styles.container}>
+        <img class="logo" src={logo} alt="Logo" />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            name="email"
+            label="Email"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.email && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.email}
+              </FormHelperText>
+            )}
+          </div>
+          <TextField
+            type="password"
+            name="password"
+            label="Password"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {/* {!!error && ( */}
+            <FormHelperText
+              classes={{ root: styles.error }}
+              error
+            ></FormHelperText>
+            {/* )} */}
+          </div>
+          <TextField
+            type="password"
+            name="password_confirm"
+            label="Confirm password"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.password && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.password}
+              </FormHelperText>
+            )}
+          </div>
+          <TextField
+            name="restaurant_name"
+            type="text"
+            label="Restaurant name"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.restaurantName && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.restaurantName}
+              </FormHelperText>
+            )}
+          </div>
+          <TextField
+            name="restaurant_address"
+            type="text"
+            label="Restaurant address"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.restaurantAddress && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.restaurantAddress}
+              </FormHelperText>
+            )}
+          </div>
+          <TextField
+            name="lunch_time_start"
+            type="text"
+            label="Lunch time start"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.lunchTimeStart && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.lunchTimeStart}
+              </FormHelperText>
+            )}
+          </div>
+          <TextField
+            name="lunch_time_end"
+            type="text"
+            label="Lunch time end"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {!!errors.lunchTimeEnd && (
+              <FormHelperText classes={{ root: styles.error }} error>
+                {errors.lunchTimeEnd}
+              </FormHelperText>
+            )}
+          </div>
+          <TextField
+            name="website_address"
+            type="url"
+            label="Website address"
+            variant="outlined"
+            onChange={handleChange}
+            classes={{ root: styles.CustomInput }}
+          />
+          <div className={styles.errorContainer}>
+            {/* {!!error && ( */}
+            <FormHelperText classes={{ root: styles.error }} error>
+              {/* {error} */}
+            </FormHelperText>
+          </div>
+          <Button
+            classes={{ root: styles.button }}
+            variant="contained"
+            color="primary"
+            type="submit"
+          >
+            Create restaurant's account
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }

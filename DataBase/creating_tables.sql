@@ -9,31 +9,31 @@ DROP TABLE Accounts;
 
 
 CREATE TABLE Accounts (
---     Login VARCHAR(20) NOT NULL,
-    Email VARCHAR(50) NOT NULL,
-    Password VARCHAR(20) NOT NULL,
+    Account_id INT NOT NULL AUTO_INCREMENT,
+    Email VARCHAR(50) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
     AccountType ENUM('Client', 'Restaurant') NOT NULL,
-    PRIMARY KEY (Email)
+    PRIMARY KEY (Account_id, Email)
 );
 
 CREATE TABLE Clients (
+	Account_id INT NOT NULL,
     Client_Id INT NOT NULL AUTO_INCREMENT,
-    Email VARCHAR(50) NOT NULL, 
     Stamps_counter INT NOT NULL DEFAULT '0',
     PRIMARY KEY (Client_Id),
-    FOREIGN KEY (Email) REFERENCES Accounts(Email)
+    FOREIGN KEY (Account_id) REFERENCES Accounts(Account_id)
 );
 
 CREATE TABLE Restaurants (
+	Account_id INT NOT NULL,
     Restaurant_Id INT NOT NULL AUTO_INCREMENT,
-    Email VARCHAR(20) NOT NULL,
     Name VARCHAR(30) NOT NULL,
     Address VARCHAR(100) NOT NULL,
     Lunch_start_time VARCHAR(4) NOT NULL,
     Lunch_end_time VARCHAR(4) NOT NULL,
     Website_address VARCHAR(50) NOT NULL,
     PRIMARY KEY (Restaurant_Id),
-    FOREIGN KEY (Email) REFERENCES Accounts(Email)
+    FOREIGN KEY (Account_id) REFERENCES Accounts(Account_id)
 );
 
 CREATE TABLE Favorite_restaurants (
