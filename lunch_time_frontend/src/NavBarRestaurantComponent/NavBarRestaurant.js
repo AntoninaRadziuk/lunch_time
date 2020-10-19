@@ -41,11 +41,12 @@ export default function NavBarRestaurant() {
   const logOutButton = () => {
     localStorage.setItem("token", "");
     localStorage.setItem("email", "");
-    userContext.setUser({ email: "", token: "", account_type: ''});
+    localStorage.setItem("account_type", "");
+    userContext.setUser({ email: "", token: "", account_type: "" });
   };
 
   const imgClick = () => {
-    history.push("/home");
+    history.push("/homerestaurant");
   };
 
   return (
@@ -58,13 +59,25 @@ export default function NavBarRestaurant() {
             alt="Logo"
             onClick={imgClick}
           />
-          <Button classes={{ root: styles.buttonIn }} color="primary">
+          <Button
+            classes={{ root: styles.buttonIn }}
+            color="primary"
+            href="/addlunch"
+            variant="outlined"
+          >
+            Add lunch
+          </Button>
+          <Button
+            classes={{ root: styles.buttonIn }}
+            color="primary"
+            href="/restaurantofferts"
+          >
             my offerts
           </Button>
           <Button
             classes={{ root: styles.buttonIn }}
             color="primary"
-            href="/profile"
+            href="/restaurantprofile"
           >
             My profile
           </Button>

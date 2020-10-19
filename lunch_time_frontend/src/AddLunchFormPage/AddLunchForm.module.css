@@ -1,0 +1,101 @@
+.box {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -10%);
+}
+
+.container {
+  display: flex;
+  flex-direction: inherit;
+  width: 1100px;
+  /* position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  margin-top: -250px;
+}
+
+.BigContainer {
+  display: flex;
+  flex-direction: column;
+  /* position: fixed; */
+}
+
+.title {
+  color: #5887fc !important;
+  margin-bottom: 300px;
+  /* margin-top: 10%; */
+}
+
+.dishes {
+  color: #19a8aa;
+  margin-top: 30px !important;
+  font-size: medium;
+  margin-bottom: -15px;
+  font-size: large;
+}
+
+.CustomInput {
+  /* border: red; */
+  /* margin: 15px 15px 0 !important; */
+  width: 300px;
+  height: 50px;
+}
+
+.CustomInputPrice {
+  margin-top: 15px !important;
+  width: 200px;
+  /* margin-left: 40px !important; */
+}
+
+.CustomInputDish {
+  margin-top: 15px !important;
+  width: 350px;
+  height: 50px;
+}
+
+.smallerContainer {
+  /* display: flex; */
+  flex-direction: column;
+  width: 400px;
+}
+
+.smallerContainerDish {
+  flex-direction: column;
+  width: 500px;
+  flex-grow: 4;
+}
+
+.PlusButton {
+  margin-top: 35px !important;
+  margin-left: -10px !important;
+}
+
+.button {
+  margin: 10px 10px 0 !important;
+  width: 200px;
+}
+
+.BottomContainer{
+  display: flex !important;
+  flex-direction: column !important;
+  width: 300px;
+  margin-top: 20px;
+  position: fixed;
+  left: 40%;
+}
+
+.CustomInputPriceBottom {
+  margin-top: 5px !important;
+  margin-left: 20px !important;
+  width: 180px;
+}
+
+.errorContainer {
+  height: 30px !important;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  width: 200px;
+}

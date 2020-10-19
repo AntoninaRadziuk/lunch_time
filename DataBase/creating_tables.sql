@@ -12,7 +12,7 @@ CREATE TABLE Accounts (
     Account_id INT NOT NULL AUTO_INCREMENT,
     Email VARCHAR(50) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
-    AccountType ENUM('Client', 'Restaurant') NOT NULL,
+    Account_Type ENUM('Client', 'Restaurant') NOT NULL,
     PRIMARY KEY (Account_id, Email)
 );
 
@@ -53,7 +53,7 @@ CREATE TABLE Kitchen_types (
 CREATE TABLE Lunch_offerts (
     Lunch_id INT NOT NULL AUTO_INCREMENT,
     Restaurant_Id INT NOT NULL,
-    Date DATE NOT NULL,
+    Date VARCHAR(20) NOT NULL,
     Soup_price DECIMAL,
     Dish_price DECIMAL NOT NULL,
     Set_price DECIMAL,

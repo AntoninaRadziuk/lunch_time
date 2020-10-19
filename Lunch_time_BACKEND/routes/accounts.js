@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const jwt = require('jsonwebtoken');
-const middlewares = require('./middlewares')
+const jwt = require("jsonwebtoken");
+const middlewares = require("./middlewares");
 
 /* GET users listing. */
 // router.get("/", function (req, res, next) {
@@ -25,7 +25,7 @@ router.post("/login", function (req, res, next) {
     return res.status(422).send(errors);
   }
 
-  sql = `SELECT email, password, accountType FROM Accounts WHERE email = '${email}';`;
+  sql = `SELECT email, password, account_Type FROM Accounts WHERE email = '${email}';`;
 
   req.app.database.query(sql, function (err, result) {
     if (result[0] === undefined) {
@@ -39,11 +39,17 @@ router.post("/login", function (req, res, next) {
         return res.status(400).send({ email: "Wrong email or password!" });
       }
 
-      const token = jwt.sign({
-        email: email,
-      }, 'myPrivateKey', { expiresIn: '1h' });
+      const token = jwt.sign(
+        {
+          email: email,
+        },
+        "myPrivateKey",
+        { expiresIn: "1h" }
+      );
 
-      res.status(200).send({ token: token, account_type: result[0].accountType });
+      res
+        .status(200)
+        .send({ token: token, account_type: result[0].account_Type });
     });
   });
 });
@@ -68,7 +74,7 @@ router.post("/register/user", function (req, res, next) {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
 
-  let sql1 = ` INSERT INTO Accounts (email, password, accounttype) VALUES ('${email}', '${hash}', 'Client');`;
+  let sql1 = ` INSERT INTO Accounts (email, password, account_type) VALUES ('${email}', '${hash}', 'Client');`;
 
   req.app.database.query(sql1, function (err, result) {
     if (err && err.code === "ER_DUP_ENTRY") {
@@ -132,7 +138,7 @@ router.post("/register/restaurant", function (req, res, next) {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
 
-  let sql1 = ` INSERT INTO Accounts (email, password, accounttype) VALUES ('${email}', '${hash}', 'Restaurant');`;
+  let sql1 = ` INSERT INTO Accounts (email, password, account_type) VALUES ('${email}', '${hash}', 'Restaurant');`;
 
   req.app.database.query(sql1, function (err, result) {
     if (err && err.code === "ER_DUP_ENTRY") {
@@ -152,14 +158,50 @@ router.post("/register/restaurant", function (req, res, next) {
   });
 });
 
+router.get("/clientprofile", middlewares.auth, function (req, res, next) {
+  // console.log(req.query.email)
 
-router.get("/profile", middlewares.auth, function (req, res, next) {
+  const sql = ` SELECT account_type, email, stamps_counter 
+                FROM Accounts left join Clients on Accounts.Account_id = Clients.Account_id
+                WHERE Accounts.email = '${req.query.email}'; `;
 
-  // req.app.database.query(sql, (err, results, fields) => {
-  //   console.log(results, err, fields);
-  // });
+  req.app.database.query(sql, (err, results, fields) => {
+    console.log(results);
+    if (results[0] === undefined) {
+      console.log("The email doesnt exist!");
+      return res.status(400).send({ message: "The email doesnt exist!" });
+    }
+    res.status(200).send({
+      account_type: results[0].account_type,
+      email: results[0].email,
+      stamps_counter: results[0].stamps_counter,
+    });
+  });
+});
 
-  res.status(200).send({message: "respond with a resource"});
+router.get("/restaurantprofile", middlewares.auth, function (req, res, next) {
+  // console.log(req.query.email)
+
+  const sql = ` SELECT account_type, email, name, address, Lunch_start_time, Lunch_end_time, Website_address 
+                FROM Accounts left join Restaurants on Accounts.Account_id = Restaurants.Account_id
+                WHERE Accounts.email = '${req.query.email}'; `;
+
+  req.app.database.query(sql, (err, results, fields) => {
+    console.log(results);
+    if (results[0] === undefined) {
+      console.log("The email doesnt exist!");
+      return res.status(400).send({ message: "The email doesnt exist!" });
+    }
+    res.status(200).send({
+      account_type: results[0].account_type,
+      email: results[0].email,
+      name: results[0].name,
+      address: results[0].address,
+      lunch_start_time: results[0].Lunch_start_time,
+      lunch_end_time: results[0].Lunch_end_time,
+      website_address: results[0].Website_address,
+    });
+  });
 });
 
 

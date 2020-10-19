@@ -1,8 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import HomeRestaurant from "./HomePageRestaurant";
 import NavBarRestaurant from "./NavBarRestaurantComponent";
-import Profile from "./ProfilePage";
+import RestaurantProfile from "./RestaurantProfilePage";
 import { Switch, Route, Redirect, Router } from "react-router-dom";
+import AddLunchForm from "./AddLunchFormPage"
+import AfterAddLunch from "./AfterAddLunchPage"
+import RestaurantOfferts from "./RestaurantOffertsPage"
 import Routes from "./Routes";
 import UserContext from "./userContext";
 
@@ -11,7 +14,7 @@ const RestaurantRoutes = () => {
   const userContext = useContext(UserContext);
 
   useEffect(() => {
-    // console.log("user", userContext.user);
+    console.log("user", userContext.user);
   }, [userContext.user]);
   
   return (
@@ -21,8 +24,17 @@ const RestaurantRoutes = () => {
           <Route path="/homerestaurant">
             <HomeRestaurant />
           </Route>
-          <Route path="/profile">
-            <Profile />
+          <Route path="/restaurantprofile">
+            <RestaurantProfile />
+          </Route>
+          <Route path="/addlunch">
+            <AddLunchForm />
+          </Route>
+          <Route path="/restaurantofferts">
+            <RestaurantOfferts />
+          </Route>
+          <Route path="/afteraddlunch">
+            <AfterAddLunch />
           </Route>
           <Redirect to="/homerestaurant" />
         </Switch>

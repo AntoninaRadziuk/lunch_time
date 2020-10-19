@@ -65,7 +65,7 @@ export default function NavBar() {
           <Button
             classes={{ root: styles.buttonIn }}
             color="primary"
-            href="/profile"
+            href="/clientprofile"
           >
             My profile
           </Button>

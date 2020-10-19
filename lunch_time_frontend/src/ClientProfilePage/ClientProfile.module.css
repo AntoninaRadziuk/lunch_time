@@ -1,0 +1,18 @@
+.button {
+  margin-top: 300px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #7E96FC;
+}
+
+.title {
+    color: #715AFF !important;
+}

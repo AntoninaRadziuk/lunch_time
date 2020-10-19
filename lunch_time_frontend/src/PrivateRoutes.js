@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import Home from "./HomePage";
 import NavBar from "./NavBarComponent";
-import Profile from "./ProfilePage";
+import ClientProfile from "./ClientProfilePage";
 import { Switch, Route, Redirect, Router } from "react-router-dom";
 import Routes from "./Routes";
 import UserContext from "./userContext";
@@ -13,12 +13,13 @@ const PrivateRoutes = () => {
   const userContext = useContext(UserContext);
 
   useEffect(() => {
-    // console.log("user", userContext.user);
+    console.log("user", userContext.user);
   }, [userContext.user]);
   
   return (
     <Fragment>
-    {userContext.user.account_type === 'Client' ? (<ClientRoutes />) : (<RestaurantRoutes />)}
+    {/* {userContext.user.account_type === 'Client' ? (<ClientRoutes />) : (<RestaurantRoutes />)} */}
+    {localStorage.getItem("account_type") === 'Client' ? (<ClientRoutes />) : (<RestaurantRoutes />)}
     </Fragment>
     // <Route path="/">
     //   <NavBar />
