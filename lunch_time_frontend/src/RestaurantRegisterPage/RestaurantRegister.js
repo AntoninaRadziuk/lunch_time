@@ -15,6 +15,10 @@ export default function RestaurantRegister() {
   const [restaurantAddress, setRestaurantAddress] = useState("");
   const [lunchTimeStart, setLunchTimeStart] = useState("");
   const [lunchTimeEnd, setLunchTimeEnd] = useState("");
+  const [soupPrice, setSoupPrice] = useState();
+  const [dishPrice, setDishPrice] = useState();
+  const [setPrice, setSetPrice] = useState();
+  const [setAndDrinkPrice, setSetAndDrinkPrice] = useState();
   const [websiteAddress, setWebsiteAddress] = useState("");
   const history = useHistory();
 
@@ -37,6 +41,10 @@ export default function RestaurantRegister() {
         restaurantAddress,
         lunchTimeStart,
         lunchTimeEnd,
+        soupPrice,
+        dishPrice,
+        setPrice,
+        setAndDrinkPrice,
         websiteAddress,
       }),
     })
@@ -67,6 +75,11 @@ export default function RestaurantRegister() {
       setLunchTimeStart(event.target.value);
     if (event.target.name === "lunch_time_end")
       setLunchTimeEnd(event.target.value);
+    if (event.target.name === "soup_price") setSoupPrice(event.target.value);
+    if (event.target.name === "dish_price") setDishPrice(event.target.value);
+    if (event.target.name === "set_price") setSetPrice(event.target.value);
+    if (event.target.name === "set_and_drink_price")
+      setSetAndDrinkPrice(event.target.value);
     if (event.target.name === "website_address")
       setWebsiteAddress(event.target.value);
   };
@@ -194,6 +207,65 @@ export default function RestaurantRegister() {
             <FormHelperText classes={{ root: styles.error }} error>
               {/* {error} */}
             </FormHelperText>
+          </div>
+          <div className={styles.PricesContainer}>
+            <TextField
+              name="soup_price"
+              type="text"
+              label="Soup price"
+              variant="outlined"
+              onChange={handleChange}
+              classes={{ root: styles.CustomInput }}
+            />
+            <div className={styles.errorContainer}>
+              {/* {!!error && ( */}
+              <FormHelperText classes={{ root: styles.error }} error>
+                {/* {error} */}
+              </FormHelperText>
+            </div>
+            <TextField
+              name="dish_price"
+              type="text"
+              label="Dish price"
+              variant="outlined"
+              onChange={handleChange}
+              classes={{ root: styles.CustomInput }}
+            />
+            <div className={styles.errorContainer}>
+              {!!errors.dishPrice && (
+                <FormHelperText classes={{ root: styles.error }} error>
+                  {errors.dishPrice}
+                </FormHelperText>
+              )}
+            </div>
+            <TextField
+              name="set_price"
+              type="text"
+              label="Set price"
+              variant="outlined"
+              onChange={handleChange}
+              classes={{ root: styles.CustomInput }}
+            />
+            <div className={styles.errorContainer}>
+              {/* {!!error && ( */}
+              <FormHelperText classes={{ root: styles.error }} error>
+                {/* {error} */}
+              </FormHelperText>
+            </div>
+            <TextField
+              name="set_and_drink_price"
+              type="text"
+              label="Set and drink price"
+              variant="outlined"
+              onChange={handleChange}
+              classes={{ root: styles.CustomInput }}
+            />
+            <div className={styles.errorContainer}>
+              {/* {!!error && ( */}
+              <FormHelperText classes={{ root: styles.error }} error>
+                {/* {error} */}
+              </FormHelperText>
+            </div>
           </div>
           <Button
             classes={{ root: styles.button }}

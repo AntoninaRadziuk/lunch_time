@@ -50,8 +50,8 @@ export default function NavBarRestaurant() {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="fixed" className={classes.main}>
+
+      <AppBar position="relative" className={classes.main}>
         <Toolbar>
           <img
             className={styles.logo}
@@ -90,6 +90,6 @@ export default function NavBarRestaurant() {
           </Button>
         </Toolbar>
       </AppBar>
-    </div>
+
   );
 }

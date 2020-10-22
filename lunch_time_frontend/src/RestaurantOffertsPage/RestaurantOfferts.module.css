@@ -5,14 +5,37 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 400px;
+  align-items: center;
+  /* position: fixed; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
   color: #7e96fc;
 }
 
 .title {
   color: #715aff !important;
+}
+
+.bigBox {
+  display: flex;
+  justify-content: center;
+  height: 90%;
+  overflow: scroll;
+}
+
+.Root {
+  /* flex-grow: 1; */
+  width: 80%;
+  padding: 20px;
+}
+
+.Paper {
+  margin: "auto";
+  max-width: 400px;
+}
+
+.Text {
+  margin: 10px 10px !important;
 }

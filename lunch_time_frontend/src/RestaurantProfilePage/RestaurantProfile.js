@@ -8,6 +8,10 @@ export default function RestaurantProfile() {
   const [address, setAddress] = useState();
   const [lunch_start_time, setLunch_start_time] = useState();
   const [lunch_end_time, setLunch_end_time] = useState();
+  const [soupPrice, setSoupPrice] = useState();
+  const [dishPrice, setDishPrice] = useState();
+  const [setPrice, setSetPrice] = useState();
+  const [setAndDrinkPrice, setSetAndDrinkPrice] = useState();
   const [website_address, setWebsite_address] = useState();
 
   useEffect(() => {
@@ -38,6 +42,10 @@ export default function RestaurantProfile() {
         setAddress(json.address);
         setLunch_start_time(json.lunch_start_time);
         setLunch_end_time(json.lunch_end_time);
+        json.soup_price === 0 ? setSoupPrice('indefine') : setSoupPrice(json.soup_price);
+        setDishPrice(json.dish_price)
+        json.set_price === 0 ? setSetPrice('indefine') : setSetPrice(json.set_price);
+        json.set_and_drink_price === 0 ? setSetAndDrinkPrice('indefine') : setSetAndDrinkPrice(json.set_and_drink_price);
         setWebsite_address(json.website_address);
         // console.log("json", json);
       })
@@ -53,6 +61,10 @@ export default function RestaurantProfile() {
         <a>address: {address}</a><br></br>
         <a>lunch start time: {lunch_start_time}</a><br></br>
         <a>lunch end time: {lunch_end_time}</a><br></br>
+        <a>soup price: {soupPrice}zł</a><br></br>
+        <a>dish price: {dishPrice}zł</a><br></br>
+        <a>set price: {setPrice}zł</a><br></br>
+        <a>set and drink price: {setAndDrinkPrice}zł</a><br></br>
         <a>website address: {website_address}</a><br></br>
       </div>
     </div>

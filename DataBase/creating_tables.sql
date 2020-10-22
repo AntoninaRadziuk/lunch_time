@@ -31,6 +31,10 @@ CREATE TABLE Restaurants (
     Address VARCHAR(100) NOT NULL,
     Lunch_start_time VARCHAR(4) NOT NULL,
     Lunch_end_time VARCHAR(4) NOT NULL,
+    Soup_price DECIMAL,
+    Dish_price DECIMAL NOT NULL,
+    Set_price DECIMAL,
+    Set_and_drink_price DECIMAL,
     Website_address VARCHAR(50) NOT NULL,
     PRIMARY KEY (Restaurant_Id),
     FOREIGN KEY (Account_id) REFERENCES Accounts(Account_id)
@@ -51,22 +55,18 @@ CREATE TABLE Kitchen_types (
 );
 
 CREATE TABLE Lunch_offerts (
-    Lunch_id INT NOT NULL AUTO_INCREMENT,
+--     Lunch_id INT NOT NULL AUTO_INCREMENT,
     Restaurant_Id INT NOT NULL,
-    Date VARCHAR(20) NOT NULL,
-    Soup_price DECIMAL,
-    Dish_price DECIMAL NOT NULL,
-    Set_price DECIMAL,
-    Set_and_drink_price DECIMAL,
-    PRIMARY KEY (Lunch_id, Date, Restaurant_Id),
+    Date VARCHAR(8) NOT NULL,
+    PRIMARY KEY (Date),
     FOREIGN KEY (Restaurant_Id) REFERENCES Restaurants(Restaurant_Id)
 );
 
 CREATE TABLE Lunch_components (
     Lunch_component_id INT NOT NULL AUTO_INCREMENT,
-    Lunch_id INT NOT NULL,
+    Date VARCHAR(8) NOT NULL,
     Component_type ENUM('Soup', 'Dish', 'Drink') NOT NULL,
-    Component_name VARCHAR(20),
+    Component_name VARCHAR(50),
     PRIMARY KEY (Lunch_component_id),
-    FOREIGN KEY (Lunch_id) REFERENCES Lunch_offerts(Lunch_id)
+    FOREIGN KEY (Date) REFERENCES Lunch_offerts(Date)
 );
