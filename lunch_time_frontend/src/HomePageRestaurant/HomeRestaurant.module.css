@@ -43,15 +43,19 @@
 }
 
 .Root {
-  /* flex-grow: 1; */
   width: 80%;
   padding: 20px;
   align-self: start;
 }
 
+.Paper:hover{
+  background-color: #F4F8FA; 
+}
+
 .Paper {
   margin: "auto";
   max-width: 500px;
+  
 }
 
 .Text {
@@ -59,19 +63,41 @@
 }
 
 .PaperContainer {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .PaperRight {
-    margin: 10px 10px !important;
+  margin: 10px 10px !important;
 }
 
 .Picture {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    margin-top: 4%;
-    margin-bottom: 3%;
-  }
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  margin-top: 4%;
+  margin-bottom: 3%;
+}
+
+.Icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.MapIcon {
+  display: block;
+  margin-left: 8px;
+  width: 2.5%;
+}
+
+.DialogContainer {
+  min-width: 300px;
+}
+
+.DishesNames {
+  margin-left: 5px !important;
+}
