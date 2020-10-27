@@ -51,7 +51,7 @@ export default function NavBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.main}>
+      <AppBar position="relative" className={classes.main}>
         <Toolbar>
           <img
             className={styles.logo}

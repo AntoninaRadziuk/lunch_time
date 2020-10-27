@@ -39,11 +39,11 @@ export default function RestaurantOfferts() {
 
   const newTable = Object.entries(offertsArray);
   const datesTable = newTable.map((element, index) => element[0]);
-  let sortedDates = datesTable
-    // .sort((a, b) =>
-    //   a.split("/").reverse().join().localeCompare(b.split("/").reverse().join())
-    // )
-    // .reverse();
+  let sortedDates = datesTable;
+  // .sort((a, b) =>
+  //   a.split("/").reverse().join().localeCompare(b.split("/").reverse().join())
+  // )
+  // .reverse();
 
   const valuestable = newTable.map((element, index) => [
     element[1].map((e, i) => [e.type, e.name]),
@@ -54,57 +54,59 @@ export default function RestaurantOfferts() {
 
   return (
     <div className={styles.bigBox}>
-      <div className={styles.container}>
-        <h1 className={styles.title}>Restaurant</h1>
-        {sortedDates.map((element, index) => (
-          <div className={styles.Root} key={index}>
-            <Paper className={styles.Paper}>
-              <Grid container spacing={2}>
-                <Grid item xs container direction="column" spacing={2}>
-                  <Grid item xs>
-                    <Typography
-                      gutterBottom
-                      variant="subtitle1"
-                      className={styles.Text}
-                    >
-                      {element}
-                    </Typography>
-                    {tab[index].map((e, i) =>
-                      e[0] === "Soup" ? (
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          className={styles.Text}
-                        >
-                          soups: {e[1]}
-                        </Typography>
-                      ) : e[0] === "Dish" ? (
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          key={i}
-                          className={styles.Text}
-                        >
-                          dishes: {e[1]}
-                        </Typography>
-                      ) : e[0] === "Drink" ? (
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          className={styles.Text}
-                        >
-                          drinks: {e[1]}
-                        </Typography>
-                      ) : (
-                        <Fragment></Fragment>
-                      )
-                    )}
+      <div className={styles.Box}>
+        <h1 className={styles.title}>Your restaurant's offerts</h1>
+        <div className={styles.container}>
+          {sortedDates.map((element, index) => (
+            <div className={styles.Root} key={index}>
+              <Paper className={styles.Paper}>
+                <Grid container spacing={2}>
+                  <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs>
+                      <Typography
+                        gutterBottom
+                        variant="subtitle1"
+                        className={styles.Text}
+                      >
+                        {element}
+                      </Typography>
+                      {tab[index].map((e, i) =>
+                        e[0] === "Soup" ? (
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            className={styles.Text}
+                          >
+                            soups: {e[1]}
+                          </Typography>
+                        ) : e[0] === "Dish" ? (
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            key={i}
+                            className={styles.Text}
+                          >
+                            dishes: {e[1]}
+                          </Typography>
+                        ) : e[0] === "Drink" ? (
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            className={styles.Text}
+                          >
+                            drinks: {e[1]}
+                          </Typography>
+                        ) : (
+                          <Fragment></Fragment>
+                        )
+                      )}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </Paper>
-          </div>
-        ))}
+              </Paper>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

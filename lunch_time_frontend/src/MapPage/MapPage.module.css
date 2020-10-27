@@ -1,0 +1,91 @@
+.button {
+  margin-top: 300px;
+}
+
+.Box {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  align-items: center;
+  /* position: fixed; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
+  color: #7e96fc;
+}
+
+.container {
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+  /* position: fixed; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
+  color: #7e96fc;
+  grid-template-columns: 300px 300px 300px;
+  grid-template-rows: auto auto 300px;
+  grid-column-gap: 10px;
+  column-gap: 10px;
+  grid-row-gap: 15px;
+  row-gap: 15px;
+}
+
+.title {
+  color: #715aff !important;
+}
+
+.bigBox {
+  display: flex;
+  justify-content: center;
+  height: 90%;
+  overflow: scroll;
+}
+
+.Root {
+  /* flex-grow: 1; */
+  width: 80%;
+  padding: 20px;
+  align-self: start;
+}
+
+.Paper {
+  margin: "auto";
+  max-width: 500px;
+}
+
+.Text {
+  margin: 5px 10px !important;
+}
+
+.PaperContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.PaperRight {
+  margin: 10px 10px !important;
+}
+
+.Picture {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  margin-top: 4%;
+  margin-bottom: 3%;
+}
+
+.Icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.MapIcon {
+  display: block;
+  margin-left: 8px;
+  width: 2.5%;
+}

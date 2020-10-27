@@ -58,8 +58,6 @@ router.get("/offerts", middlewares.auth, function (req, res, next) {
 
     res.status(200).send({
       offertsArray: offertsArray
-      // componentType: results.Component_type,
-      // componentName: results[0].Component_name,
     });
   });
 });
@@ -92,19 +90,6 @@ router.post("/addlunch/offert", middlewares.auth, function (req, res, next) {
         .send({ message: "Lunch on that date already exists!" });
     }
     console.log("1 record inserted into Lunch_offerts", result.insertId);
-
-    // let sql_help = `( select Lunch_offerts.Date as Date from Lunch_offerts where
-    // from Accounts left join Restaurants on Accounts.Account_id = Restaurants.Account_id
-    //               left join Lunch_offerts on Lunch_offerts.Restaurant_Id=Restaurants.Restaurant_Id
-    // where Lunch_offerts.Date is NOT null
-    //       and Accounts.Email='${email}')`;
-
-    // req.app.database.query(sql_help, function (err, result) {
-    //   if (err && err.code === "ER_DUP_ENTRY") {
-    //     return res
-    //       .status(409)
-    //       .send({ message: "Lunch component already exists!" });
-    //   }
 
     const components_counter =
       soupsTable.length + dishTable.length + drinksTable.length;
@@ -146,5 +131,141 @@ router.post("/addlunch/offert", middlewares.auth, function (req, res, next) {
     });
   });
 });
+
+
+router.get("/all_offerts", middlewares.auth, function (req, res, next) {
+  const sql = ` SELECT 
+                  Lunch_offerts.Date, 
+                  Restaurants.Name, 
+                  Restaurants.Lunch_start_time, 
+                  Restaurants.Lunch_end_time, 
+                  Restaurants.Set_price
+                FROM Restaurants LEFT JOIN Lunch_offerts ON Restaurants.Restaurant_Id = Lunch_offerts.Restaurant_Id
+                WHERE Lunch_offerts.Date is not null; `;
+
+  req.app.database.query(sql, (err, results, fields) => {
+    if (!results) {
+      console.log("The email doesnt exist!");
+      return res.status(400).send({ message: "The email doesnt exist!" });
+    }
+
+    const newArray = results.map((element) => [
+      element.Date,
+      element.Name,
+      element.Lunch_start_time,
+      element.Lunch_end_time,
+      element.Set_price,
+    ]);
+
+    const offertsArray = newArray.reduce(function (prevValue, currentValue) {
+      const date = currentValue[0]+currentValue[1];
+
+      if (!prevValue[date]) {
+        return {
+          ...prevValue,
+          [date]: [
+            {
+              date: currentValue[0],
+              name: currentValue[1],
+              lunch_start_time: currentValue[2],
+              lunch_end_time: currentValue[3],
+              set_price: currentValue[4],
+            },
+          ],
+        };
+      }
+
+      prevValue[date].push({
+        date: currentValue[0],
+        name: currentValue[1],
+        lunch_start_time: currentValue[2],
+        lunch_end_time: currentValue[3],
+        set_price: currentValue[4],
+      });
+
+      return prevValue;
+    }, []);
+
+    console.log(offertsArray);
+
+    res.status(200).send({
+      allOffertsArray: offertsArray
+    });
+  });
+});
+
+
+
+
+router.get("/all_lunch_components", middlewares.auth, function (req, res, next) {
+  console.log('date', req.query.date, 'name', req.query.name)
+  const sql = ` SELECT 
+                  Lunch_offerts.Date, 
+                  Restaurants.Soup_price, 
+                  Restaurants.Dish_price, 
+                  Restaurants.Set_price, 
+                  Restaurants.Set_and_drink_price,
+                  Lunch_components.Component_type,
+                  Lunch_components.Component_name
+                FROM Accounts LEFT JOIN Restaurants ON Accounts.Account_id = Restaurants.Account_id
+                  LEFT JOIN Lunch_offerts ON Restaurants.Restaurant_Id = Lunch_offerts.Restaurant_Id
+                  LEFT JOIN Lunch_components ON Lunch_offerts.Date = Lunch_components.Date
+                WHERE Restaurants.name = '${req.query.name}' AND Lunch_offerts.Date = '${req.query.date}'`;
+
+  req.app.database.query(sql, (err, results, fields) => {
+    if (!results) {
+      console.log("The lunch offert doesnt exist!");
+      return res.status(400).send({ message: "The lunch offert doesnt exist!" });
+    }
+
+    console.log(results[0].Soup_price)
+
+    const newArray = results.map((element) => [
+      element.Date,
+      // element.Soup_price,
+      // element.Dish_price,
+      // element.Set_and_drink_price,
+      element.Component_type,
+      element.Component_name,
+    ]);
+
+    const offertsArray = newArray.reduce(function (prevValue, currentValue) {
+      const date = currentValue[0];
+
+      if (!prevValue[date]) {
+        return {
+          ...prevValue,
+          [date]: [
+            {
+              type: currentValue[1],
+              name: currentValue[2],
+            },
+          ],
+        };
+      }
+
+      prevValue[date].push({
+        type: currentValue[1],
+        name: currentValue[2],
+      });
+
+      return prevValue;
+    }, []);
+
+
+    console.log(offertsArray);
+
+    res.status(200).send({
+      allOffertsArray: offertsArray,
+      soupPrice: results[0].Soup_price,
+      dishPrice: results[0].Dish_price,
+      setPrice: results[0].Set_price,
+      setAndDrinkPrice: results[0].Set_and_drink_price,
+      date: results[0].Date,
+    });
+  });
+});
+
+
 
 module.exports = router;
