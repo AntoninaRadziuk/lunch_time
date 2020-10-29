@@ -3,6 +3,7 @@ DROP TABLE Lunch_offerts;
 DROP TABLE Kitchen_types;
 DROP TABLE Favorite_restaurants;
 DROP TABLE Restaurants;
+DROP TABLE Stamps;
 DROP TABLE Clients;
 DROP TABLE Accounts;
 
@@ -22,6 +23,13 @@ CREATE TABLE Clients (
     Stamps_counter INT NOT NULL DEFAULT '0',
     PRIMARY KEY (Client_Id),
     FOREIGN KEY (Account_id) REFERENCES Accounts(Account_id)
+);
+
+CREATE TABLE Stamps (
+	Client_Id INT NOT NULL,
+	Stamp_date DATETIME NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (Date),
+    FOREIGN KEY (Client_Id) REFERENCES Clients(Client_Id)
 );
 
 CREATE TABLE Restaurants (

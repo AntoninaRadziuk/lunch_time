@@ -197,7 +197,7 @@ router.get("/clientprofile", middlewares.auth, function (req, res, next) {
 router.get("/restaurantprofile", middlewares.auth, function (req, res, next) {
   // console.log(req.query.email)
 
-  const sql = ` SELECT account_type, email, name, address, Lunch_start_time, Lunch_end_time, Soup_price, Dish_price, Set_price, Set_and_drink_price, Website_address 
+  const sql = ` SELECT Accounts.account_id, account_type, email, name, address, Lunch_start_time, Lunch_end_time, Soup_price, Dish_price, Set_price, Set_and_drink_price, Website_address 
                 FROM Accounts left join Restaurants on Accounts.Account_id = Restaurants.Account_id
                 WHERE Accounts.email = '${req.query.email}'; `;
 
@@ -208,18 +208,90 @@ router.get("/restaurantprofile", middlewares.auth, function (req, res, next) {
       return res.status(400).send({ message: "The email doesnt exist!" });
     }
     res.status(200).send({
+      account_id: results[0].account_id,
       account_type: results[0].account_type,
       email: results[0].email,
       name: results[0].name,
       address: results[0].address,
       lunch_start_time: results[0].Lunch_start_time,
       lunch_end_time: results[0].Lunch_end_time,
-      soup_price:results[0].Soup_price,
+      soup_price: results[0].Soup_price,
       dish_price: results[0].Dish_price,
       set_price: results[0].Set_price,
       set_and_drink_price: results[0].Set_and_drink_price,
       website_address: results[0].Website_address,
     });
+  });
+});
+
+router.post("/stampsCounter", middlewares.auth, function (req, res, next) {
+  const { email, result } = req.body;
+
+  const index = result.indexOf(",");
+  const restaurantEmail = result.slice(0, index);
+  const restaurantId = result.slice(index + 1, result.length);
+
+  console.log(restaurantEmail, restaurantId);
+
+  const sql = ` SELECT Accounts.Account_id 
+                FROM Accounts 
+                WHERE Accounts.Email = '${restaurantEmail}' AND Accounts.Account_id = '${restaurantId}'`;
+
+  req.app.database.query(sql, (err, results) => {
+    if (results[0] === undefined) {
+      console.log("The account doesnt exist!");
+      return res.status(400).send({ message: "The email doesnt exist!" });
+    }
+
+    const sql1 = `UPDATE Accounts LEFT JOIN Clients ON Accounts.Account_id = Clients.Account_id
+                  SET Stamps_counter = Stamps_counter + 1 
+                  WHERE Accounts.Email = '${email}';`;
+
+    req.app.database.query(sql1, (err, re) => {
+      const sql2 = `SELECT count(*) AS licznik
+                    FROM Accounts LEFT JOIN Clients ON Accounts.Account_id = Clients.Account_id
+                                  LEFT JOIN Stamps ON Clients.Client_id = Stamps.Client_id
+                    WHERE DATE_FORMAT(Stamp_date, "%Y-%c-%d") = DATE_FORMAT(now(), "%Y-%c-%d")
+                          AND Accounts.Email = '${email}';`;
+
+      req.app.database.query(sql2, (err, r) => {
+        console.log("licznik", r[0].licznik);
+
+        if (r[0].licznik === 0) {
+          const sql3 = `INSERT INTO Stamps (Client_id) VALUES ((SELECT Client_id FROM Accounts LEFT JOIN Clients ON
+                        Accounts.Account_id = Clients.Account_id WHERE Accounts.Email = '${email}'));`;
+
+          req.app.database.query(sql3, (err, result) => {
+            if (err && err.code === "ER_DUP_ENTRY") {
+              return res.status(409).send({ email: "Date already exists!" });
+            }
+            console.log("1 record inserted into Stamps", result.insertId);
+            res.status(200).send({
+              account_id: results[0].Account_id,
+            });
+          });
+        } else {
+          return res
+            .status(409)
+            .send({
+              message: "You cant get the stamp, because date already exists!",
+            });
+        }
+      });
+    });
+  });
+});
+
+router.post("/cleanStamps", middlewares.auth, function (req, res, next) {
+  console.log("jestem!!!!!!");
+  const { email } = req.body;
+
+  const sql = `UPDATE Accounts LEFT JOIN Clients ON Accounts.Account_id = Clients.Account_id
+  SET Stamps_counter = 0
+  WHERE Accounts.Email = '${email}';`;
+
+  req.app.database.query(sql, function (err, result) {
+    res.status(200).send({ message: "Stamps counter = 0" });
   });
 });
 

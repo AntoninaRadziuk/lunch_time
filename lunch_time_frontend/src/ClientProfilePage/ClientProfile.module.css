@@ -1,18 +1,27 @@
 .button {
-  margin-top: 300px;
+  margin: 20px 10px 5px !important;
+  max-width: 200px;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 400px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #7E96FC;
+  color: #7e96fc;
+  align-items: center;
 }
 
 .title {
-    color: #715AFF !important;
+  color: #715aff !important;
+  align-self: center !important;
+}
+
+.CodeReader {
+  width: 95%;
+  align-self: center !important;
+  margin-top: 20px;
 }

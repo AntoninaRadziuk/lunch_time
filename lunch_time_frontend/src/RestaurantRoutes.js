@@ -6,6 +6,7 @@ import { Switch, Route, Redirect, Router } from "react-router-dom";
 import AddLunchForm from "./AddLunchFormPage"
 import AfterAddLunch from "./AfterAddLunchPage"
 import RestaurantOfferts from "./RestaurantOffertsPage"
+import RestaurantUpdateData from "./RestaurantUpdateDataPage"
 import Routes from "./Routes";
 import UserContext from "./userContext";
 
@@ -26,6 +27,9 @@ const RestaurantRoutes = () => {
           </Route>
           <Route path="/restaurantprofile">
             <RestaurantProfile />
+          </Route>
+          <Route path="/restaurantupdatedata">
+            <RestaurantUpdateData />
           </Route>
           <Route path="/addlunch">
             <AddLunchForm />

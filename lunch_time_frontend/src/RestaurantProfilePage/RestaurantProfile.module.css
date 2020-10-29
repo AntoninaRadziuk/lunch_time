@@ -5,7 +5,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: 400px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -13,6 +13,30 @@
   color: #7e96fc;
 }
 
+.ResData a {
+  line-height: 30px;
+}
+
+.ResData {
+  margin: 30px 0;
+  /* border: 1px solid black; */
+  box-shadow: 0 2px 1rem rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+  padding: 20px;
+}
+
 .title {
   color: #715aff !important;
+  text-align: center;
+}
+
+.button {
+  margin: 10px 10px 0 !important;
+  max-width: 280px;
+  align-self: center;
+  text-align: center;
+}
+
+.Code {
+  align-self: center;
 }

@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const middlewares = require("./middlewares");
 
 router.get("/offerts", middlewares.auth, function (req, res, next) {
-
   const sql = ` SELECT 
                     Lunch_offerts.Date, 
                     Restaurants.Soup_price, 
@@ -57,7 +56,7 @@ router.get("/offerts", middlewares.auth, function (req, res, next) {
     console.log(offertsArray);
 
     res.status(200).send({
-      offertsArray: offertsArray
+      offertsArray: offertsArray,
     });
   });
 });
@@ -132,7 +131,6 @@ router.post("/addlunch/offert", middlewares.auth, function (req, res, next) {
   });
 });
 
-
 router.get("/all_offerts", middlewares.auth, function (req, res, next) {
   const sql = ` SELECT 
                   Lunch_offerts.Date, 
@@ -158,7 +156,7 @@ router.get("/all_offerts", middlewares.auth, function (req, res, next) {
     ]);
 
     const offertsArray = newArray.reduce(function (prevValue, currentValue) {
-      const date = currentValue[0]+currentValue[1];
+      const date = currentValue[0] + currentValue[1];
 
       if (!prevValue[date]) {
         return {
@@ -189,16 +187,17 @@ router.get("/all_offerts", middlewares.auth, function (req, res, next) {
     console.log(offertsArray);
 
     res.status(200).send({
-      allOffertsArray: offertsArray
+      allOffertsArray: offertsArray,
     });
   });
 });
 
-
-
-
-router.get("/all_lunch_components", middlewares.auth, function (req, res, next) {
-  console.log('date', req.query.date, 'name', req.query.name)
+router.get("/all_lunch_components", middlewares.auth, function (
+  req,
+  res,
+  next
+) {
+  console.log("date", req.query.date, "name", req.query.name);
   const sql = ` SELECT 
                   Lunch_offerts.Date, 
                   Restaurants.Soup_price, 
@@ -215,10 +214,12 @@ router.get("/all_lunch_components", middlewares.auth, function (req, res, next) 
   req.app.database.query(sql, (err, results, fields) => {
     if (!results) {
       console.log("The lunch offert doesnt exist!");
-      return res.status(400).send({ message: "The lunch offert doesnt exist!" });
+      return res
+        .status(400)
+        .send({ message: "The lunch offert doesnt exist!" });
     }
 
-    console.log(results[0].Soup_price)
+    console.log(results[0].Soup_price);
 
     const newArray = results.map((element) => [
       element.Date,
@@ -252,7 +253,6 @@ router.get("/all_lunch_components", middlewares.auth, function (req, res, next) 
       return prevValue;
     }, []);
 
-
     console.log(offertsArray);
 
     res.status(200).send({
@@ -266,6 +266,46 @@ router.get("/all_lunch_components", middlewares.auth, function (req, res, next) 
   });
 });
 
+router.get("/startupdatedata", middlewares.auth, function (req, res, next) {
+  const data = {};
 
+  let sql = ` SELECT 
+	                Restaurants.Name, 
+                  Restaurants.Lunch_start_time, 
+                  Restaurants.Lunch_end_time,  
+                  Restaurants.Soup_price,
+                  Restaurants.Dish_price,
+                  Restaurants.Set_price,
+                  Restaurants.Set_and_drink_price,
+                  Restaurants.Address,
+                  Restaurants.Website_address
+                FROM Restaurants LEFT JOIN Accounts ON Restaurants.Account_id = Accounts.Account_id
+                WHERE Accounts.Email = '${req.query.email}';`;
+
+  req.app.database.query(sql, function (err, result) {
+    // console.log("1 record inserted into Restaurants", result.insertId);
+    if (!result) {
+      console.log("The restaurant doesnt exist!");
+      return result
+        .status(400)
+        .send({ message: "The restaurant doesnt exist!" });
+    }
+
+    data.email = req.query.email;
+    data.name = result[0].Name;
+    data.lunchStartTime = result[0].Lunch_start_time;
+    data.lunchEndTime = result[0].Lunch_end_time;
+    data.soupPrice = result[0].Soup_price;
+    data.dishPrice = result[0].Dish_price;
+    data.setPrice = result[0].Set_price;
+    data.setAndDrinkPrice = result[0].Set_and_drink_price;
+    data.address = result[0].Address;
+    data.websiteAddress = result[0].Website_address;
+
+    res.status(201).send({
+      data,
+    });
+  });
+});
 
 module.exports = router;
